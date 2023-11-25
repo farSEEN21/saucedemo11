@@ -1,4 +1,3 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -6,21 +5,38 @@ import java.time.Duration;
 
 public class ConfigWeb implements data {
     WebDriver wd;
+    HelperLogin login;
+    HelperUser user;
+    HelperMain main;
+   CheckOutStep2 check;
 
-    public void start() {
+    public HelperLogin getLogin() {
+        return login;
+    }
+
+    public HelperUser getUser() {
+        return user;
+    }
+
+    public HelperMain getMain() {
+        return main;
+    }
+
+
+    public void init() {
         wd = new FirefoxDriver();
         wd.manage().window().maximize();
-        wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(33));
+        wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         wd.get("https://www.saucedemo.com/");
-
+        user = new HelperUser(wd);
+        login = new HelperLogin(wd);
+        main = new HelperMain(wd);
+         check=new CheckOutStep2(wd);
     }
 
 
-    public void login() {
-        methods meth = new methods();
-
-        meth.type(By.xpath("//input[@id='user-name']"), login);
-        meth.type(By.xpath("//input[data-test='password']"), psd);
-
+    public void teardown() {
+        wd.quit();
     }
+
 }
